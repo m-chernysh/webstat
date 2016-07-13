@@ -4,7 +4,7 @@ namespace App\Parsers;
 
 class RefererParser extends Parser
 {
-    const NAME = 'referer';
+    protected $name = 'referer';
     
     function getData()
     {

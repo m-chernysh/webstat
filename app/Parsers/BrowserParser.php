@@ -4,7 +4,7 @@ namespace App\Parsers;
 
 class BrowserParser extends Parser
 {
-    const NAME = 'browser';
+    protected $name = 'browser';
     
     function getData()
     {

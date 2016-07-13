@@ -4,7 +4,7 @@ namespace App\Parsers;
 
 class OSParser extends Parser
 {
-    const NAME = 'os';
+    protected $name = 'os';
     
     function getData()
     {

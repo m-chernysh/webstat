@@ -6,7 +6,7 @@ use Torann\GeoIP\GeoIPFacade as GeoIP;
 
 class GeoParser extends Parser
 {
-    const NAME = 'geo';
+    protected $name = 'geo';
     
     function getData()
     {

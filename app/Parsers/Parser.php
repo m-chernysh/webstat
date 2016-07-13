@@ -4,12 +4,12 @@ namespace App\Parsers;
 
 abstract class Parser
 {
-    const NAME = 'default';
+    protected $name;
 
     abstract function getData();
     
     function getName()
     {
-        return self::NAME;
+        return $this->name;
     }
 }
