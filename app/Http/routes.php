@@ -14,3 +14,10 @@
 Route::auth();
 
 Route::get('/', 'HomeController@index');
+
+Route::get('/counter.gif', 'CounterController@index');
+
+
+Route::get('/testpage', function () {
+    return view('test.counter');
+});
