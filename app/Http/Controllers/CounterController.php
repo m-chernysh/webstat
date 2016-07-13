@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\UserAgent;
-use Torann\GeoIP\GeoIPFacade as GeoIP;
 use App\Stat;
 
 class CounterController extends Controller
 {
+    protected $filename = "../resources/assets/img/smile_01.png";
 
     /**
      * Show the application dashboard.
@@ -20,23 +17,17 @@ class CounterController extends Controller
     public function index()
     {
         try {
-            $browser = UserAgent::getBrowser();
-            $os = UserAgent::getOS();
-            $geo = GeoIP::getLocation('109.105.77.32');
-            $referer = parse_url(array_get($_SERVER, 'HTTP_REFERER'), PHP_URL_HOST);
-
-            Stat::add(Stat::BROWSER, $browser);
-            Stat::add(Stat::OS, $os);
-            Stat::add(Stat::GEO, $geo['country']);
-            Stat::add(Stat::REFERER, $referer);
+            $stat = new Stat();
+            $stat->process();
 
         } catch (\Exception $e) {
             if (config('debug')) {
                 dd($e->getMessage());
+            } else {
+                // todo: bugster
             }
-            // todo: Собираем ошибки в багстер
         }
 
-        return response()->file("../resources/assets/img/smile_01.png");
+        return response()->file($this->filename);
     }
 }

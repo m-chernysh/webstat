@@ -11,6 +11,26 @@ class Stat
     const OS = 'os';
     const GEO = 'geo';
     const REFERER = 'referer';
+    
+    protected $parsers = array();
+    
+    
+    function __construct()
+    {
+        foreach (config('statistic.parsers') as $source) {
+            $this->parsers[] = app($source);
+        }
+    }
+    
+    
+    function process()
+    {
+        foreach ($this->parsers as $parser) {
+            $name = $parser->getName();
+            $data = $parser->getData();
+            $this->save($name, $data);
+        }
+    }
 
 
     /**
@@ -26,6 +46,8 @@ class Stat
         $names = $name . 's';
         $len = Redis::llen($names);
         $list = Redis::lrange($names, 0, $len - 1);
+
+        dd( Redis::sMembers('list') );
 
         $stats = [];
         foreach ($list as $value) {
@@ -51,7 +73,7 @@ class Stat
      * @param $name - название группы
      * @param $value - название итема
      */
-    static function add($name, $value)
+    protected function save($name, $value)
     {
         if (!$value) {
             return;
@@ -68,7 +90,7 @@ class Stat
         }
 
         // Пушим в общий набор итемов
-        Redis::rpush($names, $value);
+        Redis::sAdd('list', $value);
         
         // Увеличиваем обычные хиты
         Redis::incr($key);
@@ -80,6 +102,6 @@ class Stat
         }
 
         //Пушим уникальные IP
-        Redis::rpush($key_ip, $_SERVER['REMOTE_ADDR']);
+//        Redis::rpush($key_ip, $_SERVER['REMOTE_ADDR']);
     }
 }
