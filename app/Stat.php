@@ -3,6 +3,7 @@
 namespace App;
 
 use Redis;
+use Illuminate\Support\Facades\Cookie;
 
 class Stat
 {
@@ -29,17 +30,26 @@ class Stat
         $stats = [];
         foreach ($list as $value) {
             $key = $name . ':' . $value;
-            $stats[$value] = Redis::get($key);
+            $key_ip = $key . ':ip';
+            $key_unique = $key . ':unique';
+            $stats[$value] = [
+                'hits' => Redis::get($key),
+                'unique_ip' => Redis::llen($key_ip),
+                'unique_cookie' => Redis::get($key_unique),
+            ];
         }
-        
+
         return $stats;
     }
 
     /**
      * Добавляем елемент в хранилище
+     * {names : [item1, item2, item3, ...]} - набор доступных итемов
+     * {name:item1 : count} - количество хитов
+     * {name:item1:unique : count} - количество уникальных хитов
      *
-     * @param $name
-     * @param $value
+     * @param $name - название группы
+     * @param $value - название итема
      */
     static function add($name, $value)
     {
@@ -49,11 +59,27 @@ class Stat
 
         $names = $name . 's';
         $key = $name . ':' . $value;
+        $key_ip = $key . ':ip';
+        $key_unique = $key . ':unique';
+
         if (null === Redis::get($key)) {
             Redis::set($key, 0);
+            Redis::set($key_unique, 0);
         }
-        
-        Redis::incr($key);
+
+        // Пушим в общий набор итемов
         Redis::rpush($names, $value);
+        
+        // Увеличиваем обычные хиты
+        Redis::incr($key);
+
+        // Проверяем уникальных по кукам
+        if (!Cookie::get('not_unique')) {
+            Cookie::queue('not_unique', true);
+            Redis::incr($key_unique);
+        }
+
+        //Пушим уникальные IP
+        Redis::rpush($key_ip, $_SERVER['REMOTE_ADDR']);
     }
 }

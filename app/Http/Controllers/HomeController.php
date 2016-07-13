@@ -26,13 +26,15 @@ class HomeController extends Controller
     public function index()
     {
 
-        dd([
-            Stat::getData(Stat::BROWSER),
-            Stat::getData(Stat::OS),
-            Stat::getData(Stat::GEO),
-            Stat::getData(Stat::REFERER),
-        ]);
+//        dd([
+//            Stat::getData(Stat::BROWSER),
+//            Stat::getData(Stat::OS),
+//            Stat::getData(Stat::GEO),
+//            Stat::getData(Stat::REFERER),
+//        ]);
 
-        return view('home');
+        return view('home', [
+            'collection' => Stat::getData(Stat::BROWSER)
+        ]);
     }
 }
