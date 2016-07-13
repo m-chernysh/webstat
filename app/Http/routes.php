@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::auth();
+
+Route::get('/', 'HomeController@index');
