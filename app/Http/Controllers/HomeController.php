@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Stat;
 
 class HomeController extends Controller
 {
@@ -24,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        dd([
+            Stat::getData(Stat::BROWSER),
+            Stat::getData(Stat::OS),
+            Stat::getData(Stat::GEO),
+            Stat::getData(Stat::REFERER),
+        ]);
+
         return view('home');
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\UserAgent;
 use Torann\GeoIP\GeoIPFacade as GeoIP;
+use App\Stat;
 
 class CounterController extends Controller
 {
@@ -22,8 +23,17 @@ class CounterController extends Controller
             $browser = UserAgent::getBrowser();
             $os = UserAgent::getOS();
             $geo = GeoIP::getLocation('109.105.77.32');
-            $reff = parse_url(array_get($_SERVER, 'HTTP_REFERER'), PHP_URL_HOST);
+            $referer = parse_url(array_get($_SERVER, 'HTTP_REFERER'), PHP_URL_HOST);
+
+            Stat::add(Stat::BROWSER, $browser);
+            Stat::add(Stat::OS, $os);
+            Stat::add(Stat::GEO, $geo['country']);
+            Stat::add(Stat::REFERER, $referer);
+
         } catch (\Exception $e) {
+            if (config('debug')) {
+                dd($e->getMessage());
+            }
             // todo: Собираем ошибки в багстер
         }
 
