@@ -21,6 +21,8 @@ Route::get('/{group}', 'HomeController@group')
 Route::get('/counter.gif', 'CounterController@index');
 
 
-Route::get('/testpage/{id}', function () {
-    return view('test.counter');
-});
+/*
+ * Тестовые страницы
+ */
+
+Route::get('/testpage/{id}', 'CounterController@test');

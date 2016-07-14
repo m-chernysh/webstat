@@ -10,7 +10,7 @@ class GeoParser extends Parser
     
     function getData()
     {
-        $geo = GeoIP::getLocation();
+        $geo = GeoIP::getLocation($_SERVER['REMOTE_ADDR']);
         return $geo['country'];
     }
 }

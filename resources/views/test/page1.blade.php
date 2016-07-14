@@ -1,5 +1,19 @@
-Обычный каунтер с картинкой на любом сайте:
-<img src="/counter.gif">
+<div style="border: 1px solid #000; padding: 10px">
+    <p>referer</p>
+    <pre>
+        {{ $referer }}
+    </pre>
+
+    <p>remote_addr</p>
+    <pre>
+        {{ $remote_addr }}
+    </pre>
+
+    <p>user_agent</p>
+    <pre>
+        {{ $user_agent }}
+    </pre>
+</div>
 
 <p>Сценарии</p>
 <ul>

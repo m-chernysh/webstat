@@ -21,3 +21,21 @@ $ php artisan db:seed
 ~~~
 $ php artisan geoip:update
 ~~~
+
+
+### Тестовые страницы
+Данные страницы заполняют БД фейковыми значениями
+
+~~~
+/testpage/0
+/testpage/1
+/testpage/2
+/testpage/3
+/testpage/4
+/testpage/5
+/testpage/6
+/testpage/7
+/testpage/8
+/testpage/9
+/testpage/10
+~~~
