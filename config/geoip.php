@@ -41,15 +41,15 @@ return array(
 
 	'default_location' => array (
 		"ip"           => "127.0.0.0",
-		"isoCode"      => "US",
-		"country"      => "United States",
-		"city"         => "New Haven",
-		"state"        => "CT",
-		"postal_code"  => "06510",
-		"lat"          => 41.31,
-		"lon"          => -72.92,
-		"timezone"     => "America/New_York",
-		"continent"    => "NA",
+		"isoCode"      => "Home",
+		"country"      => "Home",
+		"city"         => "Home",
+		"state"        => "",
+		"postal_code"  => "000000",
+		"lat"          => 0,
+		"lon"          => 0,
+		"timezone"     => "Unknown",
+		"continent"    => "",
 	),
 
 );
