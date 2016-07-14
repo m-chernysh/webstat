@@ -4,6 +4,7 @@ namespace App;
 
 use Redis;
 use Illuminate\Support\Facades\Cookie;
+use App\Statistics\Statist;
 
 class Stat
 {
@@ -18,7 +19,7 @@ class Stat
     function __construct()
     {
         foreach (config('statistic.parsers') as $source) {
-            $this->parsers[] = app($source);
+            $this->parsers[] = app('parsers.' . $source);
         }
     }
     
@@ -26,9 +27,11 @@ class Stat
     function process()
     {
         foreach ($this->parsers as $parser) {
-            $name = $parser->getName();
-            $data = $parser->getData();
-            $this->save($name, $data);
+            $group_name = $parser->getName();
+            $value = $parser->getData();
+
+            $statist = new Statist($group_name);
+            $statist->counter($value);
         }
     }
 
@@ -38,11 +41,14 @@ class Stat
      * ключ - соответствует параметру вызова,
      * значение - количеству инициализаций
      *
-     * @param $name
+     * @param $name - имя группы
      * @return array
      */
     static function getData($name)
     {
+        $hits = new HitsStatistic([$name, $data]);
+        $hits->touch();
+        
         $names = $name . 's';
         $len = Redis::llen($names);
         $list = Redis::lrange($names, 0, $len - 1);

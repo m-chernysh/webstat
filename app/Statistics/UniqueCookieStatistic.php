@@ -3,10 +3,16 @@
 namespace App\Statistics;
 
 use Redis;
+use Illuminate\Support\Facades\Cookie;
 
-class UniqueCookieStatistic extends Statistic
+class UniqueCookieStatistic extends BaseStatistic
 {
-    function getData()
+    function __construct($group_name, $name)
+    {
+        $this->key = $group_name . ':' . $name . ':cookie';
+    }
+    
+    function getValue()
     {
         return Redis::get($this->key);
     }
@@ -14,7 +20,7 @@ class UniqueCookieStatistic extends Statistic
     function touch()
     {
         //Если еще нету таких хитов, то создаем
-        if (null === Redis::get($this->key)) {
+        if (null == Redis::get($this->key)) {
             Redis::set($this->key, 0);
         }
         

@@ -4,9 +4,9 @@ namespace App\Statistics;
 
 use Redis;
 
-class HitsStatistic extends Statistic
+class HitsStatistic extends BaseStatistic
 {
-    function getData()
+    function getValue()
     {
         return Redis::get($this->key);
     }

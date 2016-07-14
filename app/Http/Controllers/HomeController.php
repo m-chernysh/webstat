@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use App\Stat;
+use App\Statistics\Statist;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,8 +21,16 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //
+    }
+
+
+    public function group(Statist $statist, $group)
+    {
+        $statist->setGroup($group);
+
         return view('home', [
-            'collection' => Stat::getData(Stat::BROWSER)
+            'collection' => $statist->getData()
         ]);
     }
 }

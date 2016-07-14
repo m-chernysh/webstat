@@ -3,26 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Stat;
+use App\Statistics\Statist;
 
 class CounterController extends Controller
 {
     protected $filename = "../resources/assets/img/smile_01.png";
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         try {
-            $stat = new Stat();
-            $stat->process();
+            foreach (config('statistic.parsers') as $source) {
+                $parser = app('parsers.' . $source);
+                $statist = new Statist($parser->getName());
+                $statist->counter($parser->getData());
+            }
 
         } catch (\Exception $e) {
-            if (config('debug')) {
-                dd($e->getMessage());
+            if (config('app.debug')) {
+                throw $e;
             } else {
                 // todo: bugster
             }

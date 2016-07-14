@@ -4,9 +4,14 @@ namespace App\Statistics;
 
 use Redis;
 
-class UniqueIPStatistic extends Statistic
+class UniqueIPStatistic extends BaseStatistic
 {
-    function getData()
+    function __construct($group_name, $name)
+    {
+        $this->key = $group_name . ':' . $name . ':ip';
+    }
+    
+    function getValue()
     {
         // Все что нужно, это вернуть количество IP-шников
         $ips = Redis::sMembers($this->key);

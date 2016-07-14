@@ -15,6 +15,9 @@ Route::auth();
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/{group}', 'HomeController@group')
+->where(['group' => '[a-z]+']);
+
 Route::get('/counter.gif', 'CounterController@index');
 
 
