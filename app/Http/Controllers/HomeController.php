@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //
+        return view('home');
     }
 
 
@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $statist->setGroup($group);
 
-        return view('home', [
+        return view('group', [
             'group' => $group,
             'collection' => $statist->getData(),
         ]);
