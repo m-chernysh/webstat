@@ -10,12 +10,12 @@ class CounterController extends Controller
     protected $filename = "../resources/assets/img/smile_01.png";
 
 
-    public function index()
+    public function index(Statist $statist)
     {
         try {
             foreach (config('statistic.parsers') as $source) {
                 $parser = app('parsers.' . $source);
-                $statist = new Statist($parser->getName());
+                $statist->setGroup($parser->getName());
                 $statist->counter($parser->getData());
             }
 

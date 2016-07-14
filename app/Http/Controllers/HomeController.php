@@ -30,7 +30,8 @@ class HomeController extends Controller
         $statist->setGroup($group);
 
         return view('home', [
-            'collection' => $statist->getData()
+            'group' => $group,
+            'collection' => $statist->getData(),
         ]);
     }
 }
