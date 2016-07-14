@@ -6,22 +6,21 @@ use Redis;
 
 class UniqueIPStatistic extends BaseStatistic
 {
-    function __construct($group_name, $name)
-    {
-        $this->key = $group_name . ':' . $name . ':ip';
-    }
     
-    function getValue()
+    function getValue($value)
     {
         // Все что нужно, это вернуть количество IP-шников
-        $ips = Redis::sMembers($this->key);
-        return count($ips);
+        return Redis::sCard($this->getKey($value));
     }
 
-    function touch()
+    function touch($value)
     {
         // Собираем набор IP-шников
-        $ip = $_SERVER['REMOTE_ADDR'];
-        Redis::sAdd($this->key, $ip);
+        Redis::sAdd($this->getKey($value), $_SERVER['REMOTE_ADDR']);
+    }
+
+    private function getKey($value)
+    {
+        return $this->group_name . ':' . $value . ':ip';
     }
 }

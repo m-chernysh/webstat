@@ -4,14 +4,14 @@ namespace App\Statistics;
 
 abstract class BaseStatistic
 {
-    protected $key;
+    protected $group_name;
     
-    function __construct($group_name, $name)
+    function __construct($group_name)
     {
-        $this->key = $group_name . ':' . $name;
+        $this->group_name = $group_name;
     }
 
-    abstract function getValue();
+    abstract function getValue($value);
     
-    abstract function touch();
+    abstract function touch($value);
 }

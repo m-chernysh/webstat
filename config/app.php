@@ -156,6 +156,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ParsersServiceProvider::class,
+        App\Providers\StatistServiceProvider::class,
 
         /*
          * Custom Service Providers...

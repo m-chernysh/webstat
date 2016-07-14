@@ -9,8 +9,8 @@ return [
     ],
     
     'statist' => [
-        'hits' => App\Statistics\HitsStatistic::class,
-        'unique_ip' => App\Statistics\UniqueIPStatistic::class,
-        'unique_cookie' => App\Statistics\UniqueCookieStatistic::class,
+        'hits',
+        'unique_ip',
+        'unique_cookie',
     ]
 ];

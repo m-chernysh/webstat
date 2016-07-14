@@ -20,9 +20,9 @@ class Statist
     {
         Redis::sAdd($this->group_name, $value);
         
-        foreach (config('statistic.statist') as $key => $class) {
-            $counter = new $class($this->group_name, $value);
-            $counter->touch();
+        foreach (config('statistic.statist') as $key) {
+            $counter = app('statist.' . $key, [$this->group_name]);
+            $counter->touch($value);
         }
     }
     
@@ -30,11 +30,11 @@ class Statist
     {
         $list = array();
 
-        foreach (Redis::sMembers($this->group_name) as $item) {
-            $list[$item] = [];
-            foreach (config('statistic.statist') as $key => $class) {
-                $counter = new $class($this->group_name, $item);
-                $list[$item][$key] = $counter->getValue();
+        foreach (Redis::sMembers($this->group_name) as $value) {
+            $list[$value] = [];
+            foreach (config('statistic.statist') as $key) {
+                $counter = app('statist.' . $key, [$this->group_name]);
+                $list[$value][$key] = $counter->getValue($value);
             }
         }
 
